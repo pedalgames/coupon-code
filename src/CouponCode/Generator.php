@@ -179,7 +179,7 @@ class Generator
 	 */
 	public function validateCode($code) 
 	{
-		$code = $this->normalize($code, ['clean' => true, 'case' => true]);
+		$code = $this->normalizeCode($code, ['clean' => true, 'case' => true]);
 
 		// The entered code doesn't have dashes?
 		if ( strlen($code) !== ($this->numberOfSegments * $this->segmentLength) ) {
@@ -343,7 +343,7 @@ class Generator
 	 */
 	public function normalize($string)
 	{
-		$string = $this->normalize($string, ['clean' => true, 'case' => true]);
+		$string = $this->normalizeCode($string, ['clean' => true, 'case' => true]);
 		return implode('-', str_split($string, $this->segmentLength));
 	}
 	
