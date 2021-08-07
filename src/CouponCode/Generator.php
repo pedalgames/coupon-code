@@ -379,7 +379,7 @@ class Generator
 			$codeString = strtoupper($codeString);
 		}
 		// Always do this
-		$codeString = str_replace(['I', 'O', 'S', 'Z'], ['1', '0', '5', '2'], $codeString);
+		$codeString = str_replace(['I', 'O', 'S', 'Z', 'G'], ['1', '0', '5', '2', '6'], $codeString);
 
 		if ( $options['clean'] ) {
 			$codeString = preg_replace('/[^0-9A-Z]+/', '', $codeString);
