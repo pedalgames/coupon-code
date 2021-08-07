@@ -132,7 +132,7 @@ class Generator
 	 * @param string $random Allows to directly support a plaintext i.e. for testing.
 	 * @return string Dash separated and normalized code.
 	 */
-	public function generateCode($toLowerCase = false, $random = null)
+	private function generateCode($toLowerCase = false, $random = null)
 	{
 		$results = [];
 
@@ -177,7 +177,7 @@ class Generator
 	 * @param string $code string. (might not be properly formatted)
 	 * @return boolean
 	 */
-	public function validateCode($code) 
+	private function validateCode($code) 
 	{
 		$code = $this->normalizeCode($code, ['clean' => true, 'case' => true]);
 
