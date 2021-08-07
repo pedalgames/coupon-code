@@ -14,6 +14,27 @@ registration process for web access to their account.
 
 ## Installation
 
+For the pedal-games fork with bug fixes to validate() and normalize() :
+
+Add this to composer.json:
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pedalgames/coupon-code"
+        }
+    ],
+    "require": {
+        "ryantxr/coupon-code": "dev-master"
+    }
+
+and run
+
+    composer install
+
+
+For the original:
+
     composer require ryantxr/coupon-code
 
 ## Static Usage
@@ -24,6 +45,9 @@ registration process for web access to their account.
 $bytes = random_bytes(16);
 \Ryantxr\CouponCode\Generator::generate(true, $bytes); // generate a lower case code and pass in the random bytes
 \Ryantxr\CouponCode\Generator::init(['numberOfSegments' => 5, 'segmentLength' => 4])->generateCode(); // generate a code
+
+\Ryantxr\CouponCode\Generator::validate($code);
+$normalized = \Ryantxr\CouponCode\Generator::normalize($code);
 ```
 
 ## Use as an object
@@ -32,9 +56,13 @@ $bytes = random_bytes(16);
 $codeGenerator = new \Ryantxr\CouponCode\Generator();
 $codeGenerator = new \Ryantxr\CouponCode\Generator(['numberOfSegments' => 5, 'segmentLength' => 4]);
 
-$code = $codeGenerator->generateCode();
-$code = $codeGenerator->generateCode(true); // generate a lowercase code
-$code = $codeGenerator->generateCode(true, $randomBytes); // generate a lowercase code, passing in the random bytes
+$code = $codeGenerator->generate();
+$code = $codeGenerator->generate(true); // generate a lowercase code
+$bytes = random_bytes(16);
+$code = $codeGenerator->generate(true, $randomBytes); // generate a lowercase code, passing in the random bytes
+
+$codeGenerator->validate($code);
+$normalized = $codeGenerator->normalize($code);
 ```
 
 ## See also
