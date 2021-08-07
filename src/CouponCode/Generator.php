@@ -67,7 +67,8 @@ class Generator
 	public static function generate($toLowerCase=false, $randomBytes=null)
 	{
 		if ( ! self::$instance ) {
-			self::$instance = new self;
+			throw new \Exception('Missing self::$instance (did you not call init?)');
+			// self::$instance = new self;
 		}
 		return self::$instance->generateCode($toLowerCase, $randomBytes);
 	}
@@ -78,10 +79,27 @@ class Generator
 	public static function validate($codeString)
 	{
 		if ( ! self::$instance ) {
-			self::$instance = new self;
+			throw new \Exception('Missing self::$instance (did you not call init?)');
+			// self::$instance = new self;
 		}
 		return self::$instance->validateCode($codeString);
 	}
+
+	/**
+	 * Normalizes a given code using dash separators.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public static function normalize($codeString)
+	{
+		if ( ! self::$instance ) {
+			throw new \Exception('Missing self::$instance (did you not call init?)');
+			// self::$instance = new self;
+		}
+		return self::$instance->normalizeCode($codeString);
+	}
+
 
 	/**
 	 * initialize the singleton before using
@@ -132,7 +150,7 @@ class Generator
 	 * @param string $random Allows to directly support a plaintext i.e. for testing.
 	 * @return string Dash separated and normalized code.
 	 */
-	private function generateCode($toLowerCase = false, $random = null)
+	public function generateCode($toLowerCase = false, $random = null)
 	{
 		$results = [];
 
@@ -177,9 +195,9 @@ class Generator
 	 * @param string $code string. (might not be properly formatted)
 	 * @return boolean
 	 */
-	private function validateCode($code) 
+	public function validateCode($code) 
 	{
-		$code = $this->normalizeCode($code, ['clean' => true, 'case' => true]);
+		$code = $this->_normalize($code, ['clean' => true, 'case' => true]);
 
 		// The entered code doesn't have dashes?
 		if ( strlen($code) !== ($this->numberOfSegments * $this->segmentLength) ) {
@@ -199,6 +217,7 @@ class Generator
 		return true;
 	}
 	
+
 	/*
 	sub _checkdigit_alg_1 {
 		my($data, $pos) = @_;
@@ -290,7 +309,7 @@ class Generator
 		return false;
 	}
 
-	public function swappableVariations($string)
+	protected function swappableVariations($string)
 	{
 		$swappable = [];
 		for ( $i=0; $i<strlen($string)-1; $i++ ) {
@@ -301,12 +320,12 @@ class Generator
 		return $swappable;
 	}
 
-	public function permute($string)
+	protected function permute($string)
 	{
 		return $this->permuteString($string, 0, strlen($string));
 	}
 
-	private function permuteString($str, $i, $n, $accumulator=null)
+	protected function permuteString($str, $i, $n, $accumulator=null)
 	{
 		if ( empty($accumulator) ) {
 			$accumulator = [];
@@ -328,7 +347,7 @@ class Generator
 	 }
 	 
 	// function to swap the char at pos $i and $j of $str.
-	private function swapChars(&$str, $i, $j)
+	protected function swapChars(&$str, $i, $j)
 	{
 		$temp = $str[$i];
 		$str[$i] = $str[$j];
@@ -341,9 +360,9 @@ class Generator
 	 * @param string $string
 	 * @return string
 	 */
-	public function normalize($string)
+	public function normalizeCode($string)
 	{
-		$string = $this->normalizeCode($string, ['clean' => true, 'case' => true]);
+		$string = $this->_normalize($string, ['clean' => true, 'case' => true]);
 		return implode('-', str_split($string, $this->segmentLength));
 	}
 	
@@ -367,11 +386,12 @@ class Generator
 	/**
 	 * Internal method to normalize code strings
 	 * Does character replacements and removes unwanted characters.
+	 * (it also strips any dashes in the string)
 	 * @param string $codeString
 	 * @param array $options ['case' => true, 'clean' => true] convert to uppercase, remove invalid chars
 	 * @return string
 	 */
-	protected function normalizeCode(string $codeString, array $options = [])
+	protected function _normalize(string $codeString, array $options = [])
 	{
 		$options = array_merge(['clean' => false, 'case' => false], $options);
 		

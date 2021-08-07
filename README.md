@@ -40,6 +40,8 @@ For the original:
 ## Static Usage
 
 ```php
+\Ryantxr\CouponCode\Generator::init(); // initialise (required!!)
+
 \Ryantxr\CouponCode\Generator::generate(); // generate a code
 \Ryantxr\CouponCode\Generator::generate(true); // generate a lowercase code
 $bytes = random_bytes(16);
@@ -56,13 +58,13 @@ $normalized = \Ryantxr\CouponCode\Generator::normalize($code);
 $codeGenerator = new \Ryantxr\CouponCode\Generator();
 $codeGenerator = new \Ryantxr\CouponCode\Generator(['numberOfSegments' => 5, 'segmentLength' => 4]);
 
-$code = $codeGenerator->generate();
-$code = $codeGenerator->generate(true); // generate a lowercase code
+$code = $codeGenerator->generateCode();
+$code = $codeGenerator->generateCode(true); // generate a lowercase code
 $bytes = random_bytes(16);
-$code = $codeGenerator->generate(true, $randomBytes); // generate a lowercase code, passing in the random bytes
+$code = $codeGenerator->generateCode(true, $randomBytes); // generate a lowercase code, passing in the random bytes
 
-$codeGenerator->validate($code);
-$normalized = $codeGenerator->normalize($code);
+$codeGenerator->validateCode($code);
+$normalized = $codeGenerator->normalizeCode($code);
 ```
 
 ## See also
