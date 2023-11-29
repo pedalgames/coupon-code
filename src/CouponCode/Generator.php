@@ -49,6 +49,8 @@ class Generator
 		'X', 'Y'
 	];
 	
+	protected $indexedChars;
+
 	/**
 	 * ROT13 encoded list of bad words.
 	 *
